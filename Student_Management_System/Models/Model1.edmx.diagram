@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d8859b4d858b4c88bf4a6553fa4d742e" Name="Diagram1">
+        <EntityTypeShape EntityType="studentDBModel.course_info" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="studentDBModel.dept_info" Width="1.5" PointX="0.75" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="studentDBModel.std_info" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="studentDBModel.sysdiagram" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="studentDBModel.class_details" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
+        <AssociationConnector Association="studentDBModel.FK_class_details_course_info" ManuallyRouted="false" />
+        <AssociationConnector Association="studentDBModel.FK_course_info_dept_info" ManuallyRouted="false" />
+        <AssociationConnector Association="studentDBModel.FK_std_info_std_info" ManuallyRouted="false" />
+        <AssociationConnector Association="studentDBModel.FK_class_details_std_info" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

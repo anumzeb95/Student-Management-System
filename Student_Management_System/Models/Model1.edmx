@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="studentDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'studentDB.dbo.class_details' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="class_details">
+          <Key>
+            <PropertyRef Name="Std_id" />
+            <PropertyRef Name="Course_id" />
+            <PropertyRef Name="GPA" />
+          </Key>
+          <Property Name="Std_id" Type="int" Nullable="false" />
+          <Property Name="Course_id" Type="int" Nullable="false" />
+          <Property Name="GPA" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="course_info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Credit_Hours" Type="int" Nullable="false" />
+          <Property Name="Dept_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="dept_info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="std_info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phonenumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Dept_id" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_class_details_course_info">
+          <End Role="course_info" Type="Self.course_info" Multiplicity="1" />
+          <End Role="class_details" Type="Self.class_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="course_info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="class_details">
+              <PropertyRef Name="Course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_class_details_std_info">
+          <End Role="std_info" Type="Self.std_info" Multiplicity="1" />
+          <End Role="class_details" Type="Self.class_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="std_info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="class_details">
+              <PropertyRef Name="Std_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_course_info_dept_info">
+          <End Role="dept_info" Type="Self.dept_info" Multiplicity="1" />
+          <End Role="course_info" Type="Self.course_info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dept_info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="course_info">
+              <PropertyRef Name="Dept_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_std_info_std_info">
+          <End Role="dept_info" Type="Self.dept_info" Multiplicity="0..1" />
+          <End Role="std_info" Type="Self.std_info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dept_info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="std_info">
+              <PropertyRef Name="Dept_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="studentDBModelStoreContainer">
+          <EntitySet Name="course_info" EntityType="Self.course_info" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="dept_info" EntityType="Self.dept_info" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="std_info" EntityType="Self.std_info" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="class_details" EntityType="Self.class_details" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [class_details].[Std_id] AS [Std_id], 
+    [class_details].[Course_id] AS [Course_id], 
+    [class_details].[GPA] AS [GPA]
+    FROM [dbo].[class_details] AS [class_details]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_class_details_course_info" Association="Self.FK_class_details_course_info">
+            <End Role="course_info" EntitySet="course_info" />
+            <End Role="class_details" EntitySet="class_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_class_details_std_info" Association="Self.FK_class_details_std_info">
+            <End Role="std_info" EntitySet="std_info" />
+            <End Role="class_details" EntitySet="class_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_course_info_dept_info" Association="Self.FK_course_info_dept_info">
+            <End Role="dept_info" EntitySet="dept_info" />
+            <End Role="course_info" EntitySet="course_info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_std_info_std_info" Association="Self.FK_std_info_std_info">
+            <End Role="dept_info" EntitySet="dept_info" />
+            <End Role="std_info" EntitySet="std_info" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="studentDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="course_info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Credit_Hours" Type="Int32" Nullable="false" />
+          <Property Name="Dept_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="class_details" Relationship="Self.FK_class_details_course_info" FromRole="course_info" ToRole="class_details" />
+          <NavigationProperty Name="dept_info" Relationship="Self.FK_course_info_dept_info" FromRole="course_info" ToRole="dept_info" />
+        </EntityType>
+        <EntityType Name="dept_info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="course_info" Relationship="Self.FK_course_info_dept_info" FromRole="dept_info" ToRole="course_info" />
+          <NavigationProperty Name="std_info" Relationship="Self.FK_std_info_std_info" FromRole="dept_info" ToRole="std_info" />
+        </EntityType>
+        <EntityType Name="std_info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phonenumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Dept_id" Type="Int32" />
+          <NavigationProperty Name="dept_info" Relationship="Self.FK_std_info_std_info" FromRole="std_info" ToRole="dept_info" />
+          <NavigationProperty Name="class_details" Relationship="Self.FK_class_details_std_info" FromRole="std_info" ToRole="class_details" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="class_details">
+          <Key>
+            <PropertyRef Name="Std_id" />
+            <PropertyRef Name="Course_id" />
+            <PropertyRef Name="GPA" />
+          </Key>
+          <Property Name="Std_id" Type="Int32" Nullable="false" />
+          <Property Name="Course_id" Type="Int32" Nullable="false" />
+          <Property Name="GPA" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="course_info" Relationship="Self.FK_class_details_course_info" FromRole="class_details" ToRole="course_info" />
+          <NavigationProperty Name="std_info" Relationship="Self.FK_class_details_std_info" FromRole="class_details" ToRole="std_info" />
+        </EntityType>
+        <Association Name="FK_class_details_course_info">
+          <End Role="course_info" Type="Self.course_info" Multiplicity="1" />
+          <End Role="class_details" Type="Self.class_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="course_info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="class_details">
+              <PropertyRef Name="Course_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_course_info_dept_info">
+          <End Role="dept_info" Type="Self.dept_info" Multiplicity="1" />
+          <End Role="course_info" Type="Self.course_info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dept_info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="course_info">
+              <PropertyRef Name="Dept_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_std_info_std_info">
+          <End Role="dept_info" Type="Self.dept_info" Multiplicity="0..1" />
+          <End Role="std_info" Type="Self.std_info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="dept_info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="std_info">
+              <PropertyRef Name="Dept_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_class_details_std_info">
+          <End Role="std_info" Type="Self.std_info" Multiplicity="1" />
+          <End Role="class_details" Type="Self.class_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="std_info">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="class_details">
+              <PropertyRef Name="Std_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="studentDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="course_info" EntityType="Self.course_info" />
+          <EntitySet Name="dept_info" EntityType="Self.dept_info" />
+          <EntitySet Name="std_info" EntityType="Self.std_info" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="class_details" EntityType="Self.class_details" />
+          <AssociationSet Name="FK_class_details_course_info" Association="Self.FK_class_details_course_info">
+            <End Role="course_info" EntitySet="course_info" />
+            <End Role="class_details" EntitySet="class_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK_course_info_dept_info" Association="Self.FK_course_info_dept_info">
+            <End Role="dept_info" EntitySet="dept_info" />
+            <End Role="course_info" EntitySet="course_info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_std_info_std_info" Association="Self.FK_std_info_std_info">
+            <End Role="dept_info" EntitySet="dept_info" />
+            <End Role="std_info" EntitySet="std_info" />
+          </AssociationSet>
+          <AssociationSet Name="FK_class_details_std_info" Association="Self.FK_class_details_std_info">
+            <End Role="std_info" EntitySet="std_info" />
+            <End Role="class_details" EntitySet="class_details" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="studentDBModelStoreContainer" CdmEntityContainer="studentDBEntities">
+          <EntitySetMapping Name="course_info">
+            <EntityTypeMapping TypeName="studentDBModel.course_info">
+              <MappingFragment StoreEntitySet="course_info">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Credit_Hours" ColumnName="Credit_Hours" />
+                <ScalarProperty Name="Dept_Id" ColumnName="Dept_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="dept_info">
+            <EntityTypeMapping TypeName="studentDBModel.dept_info">
+              <MappingFragment StoreEntitySet="dept_info">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="std_info">
+            <EntityTypeMapping TypeName="studentDBModel.std_info">
+              <MappingFragment StoreEntitySet="std_info">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phonenumber" ColumnName="Phonenumber" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Dept_id" ColumnName="Dept_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="studentDBModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="class_details">
+            <EntityTypeMapping TypeName="studentDBModel.class_details">
+              <MappingFragment StoreEntitySet="class_details">
+                <ScalarProperty Name="Std_id" ColumnName="Std_id" />
+                <ScalarProperty Name="Course_id" ColumnName="Course_id" />
+                <ScalarProperty Name="GPA" ColumnName="GPA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
